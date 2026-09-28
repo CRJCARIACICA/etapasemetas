@@ -119,6 +119,18 @@ async function claimAdmin(){
   if(!data)return alert('Código inválido ou o primeiro administrador já foi definido.');
   await handleAuthenticated(authUser);
 }
+async function redeemInvite(){
+  if(!authUser)return alert('Faça login antes de usar o convite.');
+  const el=document.getElementById('inviteCode');
+  const code=(el?.value||'').trim();
+  if(!code)return alert('Informe o código de convite.');
+  const {data,error}=await supabase.rpc('crj_redeem_invite',{p_code:code});
+  if(error)return alert('Não foi possível validar o convite: '+error.message);
+  if(!data)return alert('Código inválido, já utilizado ou desativado.');
+  if(el)el.value='';
+  alert('Acesso ativado com perfil: '+data+'.');
+  await handleAuthenticated(authUser);
+}
 async function requestAccess(){
   if(!authUser)return;
   const {error}=await supabase.from('crj_membership_requests').insert({user_id:authUser.id,email:authUser.email});
