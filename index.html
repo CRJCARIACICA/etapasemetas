@@ -20,8 +20,26 @@
     </div>
     <div id="membershipPanel" class="auth-hidden">
       <div id="membershipText" class="auth-msg">Sua conta ainda não possui acesso.</div>
-      <div class="field" style="margin-top:12px"><label>Primeiro administrador — código de ativação</label><input id="bootstrapToken" placeholder="Use apenas no primeiro acesso administrativo"></div>
-      <div class="auth-actions"><button class="btn-primary" onclick="claimAdmin()">Ativar primeiro administrador</button><button onclick="requestAccess()">Solicitar acesso</button><button onclick="logoutApp()">Sair</button></div>
+
+      <div class="field" style="margin-top:12px">
+        <label>Código de convite</label>
+        <input id="inviteCode" autocomplete="off" placeholder="Ex.: CRJ-XXXX-XXXX-XXXX">
+        <span class="small">Se você recebeu um convite da coordenação, informe-o aqui. Cada código pode ter uso único.</span>
+      </div>
+      <div class="auth-actions">
+        <button class="btn-primary" onclick="redeemInvite()">Usar código de convite</button>
+        <button onclick="requestAccess()">Solicitar acesso</button>
+        <button onclick="logoutApp()">Sair</button>
+      </div>
+
+      <details style="margin-top:16px">
+        <summary class="small">Ativação inicial do sistema</summary>
+        <div class="field" style="margin-top:10px">
+          <label>Primeiro administrador — código de ativação</label>
+          <input id="bootstrapToken" autocomplete="off" placeholder="Somente para o primeiro administrador">
+        </div>
+        <button onclick="claimAdmin()">Ativar primeiro administrador</button>
+      </details>
     </div>
   </div>
 </div>
