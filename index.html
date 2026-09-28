@@ -19,27 +19,8 @@
       <div id="authMessage" class="auth-msg">Entre com sua conta. Contas sem autorização não acessam os dados do CRJ.</div>
     </div>
     <div id="membershipPanel" class="auth-hidden">
-      <div id="membershipText" class="auth-msg">Sua conta ainda não possui acesso.</div>
-
-      <div class="field" style="margin-top:12px">
-        <label>Código de convite</label>
-        <input id="inviteCode" autocomplete="off" placeholder="Ex.: CRJ-XXXX-XXXX-XXXX">
-        <span class="small">Se você recebeu um convite da coordenação, informe-o aqui. Cada código pode ter uso único.</span>
-      </div>
-      <div class="auth-actions">
-        <button class="btn-primary" onclick="redeemInvite()">Usar código de convite</button>
-        <button onclick="requestAccess()">Solicitar acesso</button>
-        <button onclick="logoutApp()">Sair</button>
-      </div>
-
-      <details style="margin-top:16px">
-        <summary class="small">Ativação inicial do sistema</summary>
-        <div class="field" style="margin-top:10px">
-          <label>Primeiro administrador — código de ativação</label>
-          <input id="bootstrapToken" autocomplete="off" placeholder="Somente para o primeiro administrador">
-        </div>
-        <button onclick="claimAdmin()">Ativar primeiro administrador</button>
-      </details>
+      <div id="membershipText" class="auth-msg">Validando seu acesso…</div>
+      <div class="auth-actions"><button onclick="logoutApp()">Sair</button></div>
     </div>
   </div>
 </div>
@@ -103,7 +84,10 @@
   </div>
 
   <div class="card config-section"><h2>Equipes e responsáveis do Plano Mensal</h2><p class="small">A lista abaixo alimenta os campos de responsabilidade. As funções-padrão vêm da metodologia, mas você pode incluir nomes de pessoas/equipes e seus períodos de atuação. Isso não altera as atribuições formais; apenas organiza a distribuição interna mensal.</p><div id="responsibilityActorsList"></div><button onclick="addResponsibilityActor()">+ Adicionar equipe/pessoa</button><button class="btn-primary" onclick="saveResponsibilityActors()" style="margin-left:6px">Salvar responsáveis</button></div>
-  <div class="card config-section" id="accessAdminCard" style="display:none"><h2>Acessos da equipe</h2><p class="small">Apenas administradores podem aprovar solicitações e definir perfil. Coordenador pode editar o sistema; visualizador possui acesso somente de leitura.</p><div id="pendingAccess"></div></div>
+  <div class="card config-section">
+    <h2>Acesso ao sistema</h2>
+    <p class="small">O acesso é liberado automaticamente após a confirmação do e-mail e o primeiro login. Novos usuários entram como <b>Coordenador</b>. Alterações de perfil ou bloqueios podem ser feitos pela administração no Supabase.</p>
+  </div>
   <div class="card"><h2>Dados e segurança</h2><p class="small">Os dados oficiais ficam no Supabase. O navegador mantém apenas um cache local para recuperação e rapidez. “Backup JSON” continua disponível como cópia adicional.</p><button class="btn-danger" onclick="clearLocalCache()">Limpar cache local</button></div>
 </section>
 </main>
