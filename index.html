@@ -26,12 +26,13 @@
   </div>
 </div>
 <header>
-  <div class="brand"><h1>Sistema de Metas CRJ — Avante Social / SEDH</h1><p>Gestão mensal do Plano de Trabalho, cronograma físico, evidências e geração de relatório</p></div>
+  <div class="brand"><h1>Sistema de Metas CRJ — Avante Social / SEDH</h1><p>Gestão mensal do Plano de Trabalho, evidências, responsabilidades, cronograma físico e relatórios</p></div>
   <div class="header-actions"><span class="user-chip" id="authUserBadge">Conectando…</span><span class="user-chip" id="syncStatus">Banco: aguardando</span><button class="btn-ghost" onclick="logoutApp()">Sair</button><button class="btn-ghost" onclick="backupJSON()">Backup JSON</button><button class="btn-ghost" onclick="document.getElementById('jsonFile').click()">Restaurar</button><input id="jsonFile" type="file" accept="application/json" style="display:none" onchange="restoreJSON(event)"><button class="btn-primary" onclick="exportXLSX()">Exportar Excel</button><button onclick="window.print()">Imprimir / PDF</button></div>
 </header>
 <nav>
   <button class="tab active" data-view="dashboardView">Painel</button>
   <button class="tab" data-view="monthlyView">Preenchimento mensal</button>
+  <button class="tab" data-view="responsibilityView">Plano de responsabilidades</button>
   <button class="tab" data-view="sheetView">Planilha contratual</button>
   <button class="tab" data-view="configView">Configurações</button>
 </nav>
@@ -43,10 +44,7 @@
     <div class="card"><h3>Competência atual</h3><div id="currentCompetence"></div></div>
   </div>
   <div class="section-title"><h2>Alertas de interpretação contratual</h2><span class="small">O sistema não resolve divergências documentais silenciosamente.</span></div>
-  <div class="alert bad"><strong>Etapa 2.1 — quantidade total x cronograma</strong>O detalhamento prevê 380 atendimentos mensais e total de 6.840 em 18 meses (380 × 18), porém o cronograma físico marca a etapa do mês contratual 2 ao 18, totalizando 17 competências operacionais. Registre no campo “Critério adotado” a orientação formal usada pela coordenação/SEDH.</div>
-  <div class="alert bad"><strong>Carga horária de oficinas/cursos — 160h x 120h</strong>A Etapa 4.6 e a Etapa 6.1 apontam 160 horas mensais; a Etapa 6.4 traz 120 horas mensais. O sistema mantém os dois parâmetros visíveis e permite definir o critério oficial sem apagar a redação original.</div>
-  <div class="alert"><strong>Etapa 8.1 — cronograma mensal, entrega bimestral</strong>A etapa permanece ativa em todas as competências operacionais, mas o resultado esperado é uma capacitação bimestral. O painel monitora mensalmente e cobra a entrega nos meses de fechamento do bimestre.</div>
-  <div class="alert"><strong>Etapa 9.2 — formulário anual com cronograma recorrente</strong>O cronograma marca a etapa durante os meses operacionais, mas a entrega é a elaboração de um formulário. O sistema cobra a criação inicialmente e, nos meses seguintes, permite registrar manutenção/uso/atualização.</div>
+  <div id="documentConflictAlerts"></div>
   <div class="section-title"><h2>Pendências da competência</h2><button onclick="switchView('monthlyView')">Abrir preenchimento</button></div>
   <div id="pendingList" class="card"></div>
 </section>
@@ -56,6 +54,14 @@
     <div class="month-toolbar"><button onclick="shiftMonth(-1)">◀</button><div class="month-title" id="monthTitle"></div><button onclick="shiftMonth(1)">▶</button><select id="monthSelect" style="width:auto" onchange="setMonth(+this.value)"></select><label class="toggle" style="margin-left:auto"><input type="checkbox" id="showInactive" onchange="renderMonthly()"> Mostrar etapas fora do cronograma</label></div>
   </div>
   <div id="monthlyContent"></div>
+</section>
+
+
+<section id="responsibilityView" class="view">
+  <div class="card no-print">
+    <div class="month-toolbar"><strong>Plano mensal de responsabilidades</strong><select id="respMonthSelect" style="width:auto" onchange="setMonth(+this.value);renderResponsibilityPlan()"></select><span class="small">Sugestões baseadas nas atribuições da metodologia; a coordenação pode configurar cada competência.</span><div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap"><button onclick="exportResponsibilityXLSX()">Exportar Excel</button><button onclick="downloadResponsibilityHTML()">Documento editável/HTML</button><button onclick="shareResponsibilityPlan()">Enviar / compartilhar</button><button onclick="printResponsibilityPlan()">Imprimir / PDF</button></div></div>
+  </div>
+  <div id="responsibilityContent"></div>
 </section>
 
 <section id="sheetView" class="view">
@@ -74,13 +80,16 @@
     <div class="card config-section"><h2>Coordenadores por período</h2><p class="small">O relatório mensal seleciona automaticamente o coordenador vigente na competência. Você pode manter o histórico sem sobrescrever meses anteriores.</p><div id="coordinatorList"></div><button onclick="addCoordinator()">+ Adicionar período</button><button class="btn-primary" onclick="saveCoordinators()" style="margin-left:6px">Salvar</button></div>
   </div>
   <div class="card config-section"><h2>Regras de flexibilidade</h2>
-    <div class="grid grid-3"><div class="field"><label>Meta de horas mensais adotada para cursos/oficinas</label><select id="cfgHours"><option value="160">160 horas (Etapas 4.6 / 6.1)</option><option value="120">120 horas (Etapa 6.4)</option><option value="custom">Outro critério</option></select></div><div class="field"><label>Meta mensal de atendimentos 2.1</label><input id="cfgAttendance" type="number" value="380"></div><div class="field"><label>Permitir “Sem demanda”</label><select id="cfgNoDemand"><option value="demand">Somente itens dependentes de demanda</option><option value="all">Todas as etapas, com justificativa</option><option value="none">Não permitir</option></select></div></div>
+    <div class="grid grid-3"><div class="field"><label>Critério operacional de horas diante do conflito documental</label><select id="cfgHours"><option value="160">160 horas (Etapa 4.6 e texto do Tô no Topo)</option><option value="120">120 horas (tabela da Etapa 6.4)</option><option value="custom">Outro critério formalmente documentado</option></select></div><div class="field"><label>Referência contratual mensal da Etapa 2.1</label><input id="cfgAttendance" type="number" value="380" readonly><span class="small">380 é referência expressa no Plano e não deve ser alterada pelo sistema.</span></div><div class="field"><label>Permitir “Sem demanda”</label><select id="cfgNoDemand"><option value="demand">Somente itens dependentes de demanda</option><option value="all">Todas as etapas, com justificativa</option><option value="none">Não permitir</option></select></div></div>
     <p class="small">Alterações aqui não apagam o texto oficial. O sistema mantém a referência original e registra qual regra operacional foi adotada.</p>
   </div>
+
+  <div class="card config-section"><h2>Equipes e responsáveis do Plano Mensal</h2><p class="small">A lista abaixo alimenta os campos de responsabilidade. As funções-padrão vêm da metodologia, mas você pode incluir nomes de pessoas/equipes e seus períodos de atuação. Isso não altera as atribuições formais; apenas organiza a distribuição interna mensal.</p><div id="responsibilityActorsList"></div><button onclick="addResponsibilityActor()">+ Adicionar equipe/pessoa</button><button class="btn-primary" onclick="saveResponsibilityActors()" style="margin-left:6px">Salvar responsáveis</button></div>
   <div class="card config-section" id="accessAdminCard" style="display:none"><h2>Acessos da equipe</h2><p class="small">Apenas administradores podem aprovar solicitações e definir perfil. Coordenador pode editar o sistema; visualizador possui acesso somente de leitura.</p><div id="pendingAccess"></div></div>
   <div class="card"><h2>Dados e segurança</h2><p class="small">Os dados oficiais ficam no Supabase. O navegador mantém apenas um cache local para recuperação e rapidez. “Backup JSON” continua disponível como cópia adicional.</p><button class="btn-danger" onclick="clearLocalCache()">Limpar cache local</button></div>
 </section>
 </main>
 <script src="app.js"></script>
+<script src="enhancements.js"></script>
 </body>
 </html>
