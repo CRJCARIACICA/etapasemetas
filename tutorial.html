@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tutorial — Sistema de Metas CRJ</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:#f4f7fa}
+.tutorial-standalone{max-width:1180px;margin:0 auto;padding:20px}
+.standalone-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.standalone-top a{text-decoration:none}
+.standalone-note{font-size:11px;color:#64748b;margin-top:3px}
+.tutorial-standalone-primary{background:#2d5b88;color:#fff;border-color:#2d5b88}
+#tutorialView{display:block!important}
+@media print{.standalone-top{display:none}}
+</style>
+</head>
+<body>
+<div class="tutorial-standalone">
+  <div class="standalone-top">
+    <div>
+      <b>Sistema de Metas CRJ — Avante Social / SEDH</b>
+      <div class="standalone-note">Tutorial visual de preenchimento, evidências e responsabilidades</div>
+    </div>
+    <a class="tutorial-link-btn" style="color:#315f8d;border-color:#b9cada;background:#fff" href="./">← Voltar ao sistema</a>
+  </div>
+  <section id="tutorialView" class="view active">
+  <div class="tutorial-hero">
+    <div>
+      <span class="tutorial-kicker">GUIA VISUAL DE PREENCHIMENTO</span>
+      <h2>Como usar o Sistema de Metas CRJ</h2>
+      <p>Do primeiro acesso ao fechamento mensal: competência, etapas, evidências, conflitos documentais, responsabilidades e exportação.</p>
+    </div>
+    <div class="tutorial-hero-actions">
+      <a class="tutorial-link-btn tutorial-standalone-primary" href="./">Abrir o sistema</a>
+      
+      
+    </div>
+  </div>
+
+  <div class="tutorial-flow">
+    <div class="tutorial-step"><span>1</span><b>Criar conta</b><small>E-mail + senha</small></div>
+    <div class="tutorial-arrow">→</div>
+    <div class="tutorial-step"><span>2</span><b>Confirmar e-mail</b><small>Confirmação do Supabase</small></div>
+    <div class="tutorial-arrow">→</div>
+    <div class="tutorial-step"><span>3</span><b>Entrar</b><small>Acesso automático</small></div>
+    <div class="tutorial-arrow">→</div>
+    <div class="tutorial-step"><span>4</span><b>Escolher mês</b><small>M1 a M18</small></div>
+    <div class="tutorial-arrow">→</div>
+    <div class="tutorial-step"><span>5</span><b>Preencher etapas</b><small>Resultado + evidência</small></div>
+    <div class="tutorial-arrow">→</div>
+    <div class="tutorial-step"><span>6</span><b>Distribuir tarefas</b><small>Plano mensal</small></div>
+    <div class="tutorial-arrow">→</div>
+    <div class="tutorial-step"><span>7</span><b>Exportar</b><small>Excel / PDF / HTML</small></div>
+  </div>
+
+  <div class="tutorial-rule">
+    <div class="tutorial-rule-icon">!</div>
+    <div>
+      <b>Regra de ouro</b>
+      <p><strong>Nunca invente uma meta numérica.</strong> Só trate um número como meta quando o Termo/Plano o apresentar como obrigação mensurável. Sem número explícito, registre o item como resultado esperado e descreva o que foi realizado.</p>
+    </div>
+  </div>
+
+  <div class="tutorial-grid-2">
+    <div class="tutorial-card">
+      <div class="tutorial-number">01</div>
+      <h3>Acesso ao sistema</h3>
+      <p>Crie a conta, confirme o e-mail e faça login. Após a confirmação, o acesso ao Sistema de Metas é validado automaticamente com perfil inicial de Coordenador.</p>
+      <div class="tutorial-mock">
+        <div class="mock-title">Sistema de Metas CRJ</div>
+        <label>E-mail</label><div class="mock-input">nome@avantesocial.org.br</div>
+        <label>Senha</label><div class="mock-input">••••••••</div>
+        <div class="mock-actions"><span class="mock-primary">Entrar</span><span>Criar conta</span></div>
+      </div>
+      <div class="tutorial-ok">✓ Não existe código de convite nem aprovação manual após a confirmação do e-mail.</div>
+    </div>
+
+    <div class="tutorial-card">
+      <div class="tutorial-number">02</div>
+      <h3>Selecione a competência</h3>
+      <p>Abra <b>Preenchimento mensal</b> e escolha o mês contratual. O sistema indica as etapas ativas e diferencia execução contínua de entregas periódicas.</p>
+      <div class="tutorial-mock">
+        <div class="mock-toolbar"><span>◀</span><b>M12 · Setembro/2026</b><span>▶</span></div>
+        <div class="mock-row"><span class="mock-badge ok">ATIVA</span><b>Etapa 5.2</b><span>Reunião mensal com a rede</span></div>
+        <div class="mock-row muted"><span class="mock-badge">FORA DO MÊS</span><b>Etapa 9.6</b><span>Prestação de contas final</span></div>
+      </div>
+      <div class="tutorial-tip"><b>Atenção:</b> etapa ativa não significa, por si só, que existe entrega vencendo naquele mês.</div>
+    </div>
+  </div>
+
+  <div class="tutorial-card tutorial-wide">
+    <div class="tutorial-number">03</div>
+    <h3>Leia o cartão da etapa nesta ordem</h3>
+    <div class="tutorial-read-order">
+      <div><span>1</span><b>Detalhamento</b><small>O que precisa ser executado.</small></div>
+      <div><span>2</span><b>Resultado esperado</b><small>O que deve ser alcançado.</small></div>
+      <div><span>3</span><b>Indicador</b><small>Como o resultado será medido.</small></div>
+      <div><span>4</span><b>Meio de verificação</b><small>O que comprova a execução.</small></div>
+    </div>
+    <div class="tutorial-rule soft">
+      <div class="tutorial-rule-icon">?</div>
+      <div><b>Abra o balão explicativo</b><p>Ele mostra como justificar a etapa, o tipo de evidência esperado e eventuais conflitos documentais.</p></div>
+    </div>
+  </div>
+
+  <div class="tutorial-card tutorial-wide">
+    <div class="tutorial-number">04</div>
+    <h3>Exemplo visual de preenchimento</h3>
+    <p>Exemplo didático de uma entrega mensal. Use a mesma lógica nas demais etapas, respeitando sempre o texto oficial da competência.</p>
+    <div class="tutorial-example">
+      <div class="tutorial-example-head">
+        <div><span class="mock-badge ok">ATIVA · ENTREGA DO MÊS</span><h4>Meta 5 · Etapa 5.2</h4></div>
+        <span class="mock-badge info">Mensal</span>
+      </div>
+      <div class="tutorial-source-grid">
+        <div><small>RESULTADO ESPERADO</small><p>Reunião mensal com a rede de proteção social.</p></div>
+        <div><small>INDICADOR</small><p>Número de reuniões realizadas no mês.</p></div>
+        <div><small>MEIO DE VERIFICAÇÃO</small><p>Relatório, lista de presença, registro fotográfico e sistema previsto.</p></div>
+      </div>
+      <div class="tutorial-form-grid">
+        <div class="tutorial-field"><label>Status</label><div class="mock-input strong">Cumprida</div><small>Marque após conferir as evidências.</small></div>
+        <div class="tutorial-field"><label>Realizado / Valor</label><div class="mock-input strong">1 reunião realizada em 28/09/2026</div><small>Informe o resultado objetivo.</small></div>
+        <div class="tutorial-field full"><label>Evidências / arquivos / links</label><div class="mock-textarea">Ata da reunião – 28/09/2026<br>Lista de presença assinada<br>3 fotos identificadas<br>Pasta: M12 / Rede de Proteção</div></div>
+        <div class="tutorial-field full"><label>Justificativa técnica / encaminhamento</label><div class="mock-textarea">Reunião realizada com participação da rede. Foram discutidas demandas do território e definidos os responsáveis pelos retornos. Evidências arquivadas na competência.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tutorial-grid-2">
+    <div class="tutorial-card">
+      <div class="tutorial-number">05</div>
+      <h3>Escolha a evidência que prova o indicador</h3>
+      <div class="evidence-visual-list">
+        <div><span>👥</span><b>Lista de presença</b><small>Participantes, data e atividade.</small></div>
+        <div><span>📷</span><b>Registro fotográfico</b><small>Realização visual, com data e identificação.</small></div>
+        <div><span>📄</span><b>Relatório / ata</b><small>Conteúdo, resultado e encaminhamentos.</small></div>
+        <div><span>🗂</span><b>Sistema JuventudES</b><small>Registro oficial de participação/atendimento quando aplicável.</small></div>
+        <div><span>✅</span><b>Documento formal</b><small>Contrato, certificado, parceria, formulário ou pesquisa.</small></div>
+      </div>
+      <div class="tutorial-badgood">
+        <div class="bad"><b>Evite</b><p>“Tem foto no WhatsApp.”</p></div>
+        <div class="good"><b>Prefira</b><p>“3 fotos da atividade de 28/09 identificadas e arquivadas na pasta M12.”</p></div>
+      </div>
+    </div>
+
+    <div class="tutorial-card">
+      <div class="tutorial-number">06</div>
+      <h3>Se não houver número explícito</h3>
+      <div class="tutorial-decision">
+        <div class="decision-q">O Termo/Plano traz quantidade obrigatória explícita?</div>
+        <div class="decision-branches">
+          <div class="yes"><b>SIM</b><span>Registre o valor documental e o realizado.</span></div>
+          <div class="no"><b>NÃO</b><span>Trate como resultado esperado e descreva a execução.</span></div>
+        </div>
+      </div>
+      <div class="tutorial-example-mini">
+        <b>Exemplo</b>
+        <p>Se o documento disser apenas “fortalecer a articulação com a rede”, descreva as articulações realizadas, resultados e evidências. Não transforme isso em “meta: 4 reuniões” sem base documental.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tutorial-card tutorial-wide">
+    <div class="tutorial-number">07</div>
+    <h3>Conflito documental: não escolha sozinho</h3>
+    <p>Quando duas partes do documento apresentarem valores, periodicidades ou critérios incompatíveis, o sistema deve manter as duas referências e registrar a orientação oficial adotada.</p>
+    <div class="conflict-visual">
+      <div class="conflict-doc"><small>REFERÊNCIA A</small><b>Critério / valor A</b></div>
+      <div class="conflict-vs">≠</div>
+      <div class="conflict-doc"><small>REFERÊNCIA B</small><b>Critério / valor B</b></div>
+      <div class="conflict-action"><b>→ Registrar critério oficial</b><span>Sem apagar a divergência.</span></div>
+    </div>
+    <div class="tutorial-real-conflict">
+      <b>Exemplo real já identificado:</b>
+      <p>Na Meta 2 há referência geral a <strong>4.560 atendimentos em 18 meses</strong>, enquanto a Etapa 2.1 traz <strong>380 atendimentos mensais e 6.840 em 18 meses</strong>. O sistema sinaliza a divergência; a coordenação deve registrar a orientação oficial.</p>
+    </div>
+  </div>
+
+  <div class="tutorial-card tutorial-wide">
+    <div class="tutorial-number">08</div>
+    <h3>Plano mensal de responsabilidades</h3>
+    <p>Depois de revisar as etapas do mês, distribua as ordens internas. As sugestões de responsáveis vêm da metodologia, mas podem ser alteradas para cada competência.</p>
+    <div class="responsibility-demo">
+      <div class="resp-demo-head"><b>Etapa 5.2 · Articulação com a rede</b><span>M12</span></div>
+      <div class="resp-demo-grid">
+        <div><small>RESPONSÁVEL PRINCIPAL</small><strong>Coordenação de Articulação</strong></div>
+        <div><small>APOIO</small><strong>Articulação Local + Equipe Técnica</strong></div>
+        <div><small>ORDEM DO MÊS</small><strong>Articular e realizar reunião da rede</strong></div>
+        <div><small>PRAZO INTERNO</small><strong>25/09/2026</strong></div>
+        <div><small>EVIDÊNCIA ESPERADA</small><strong>Ata + lista + fotos + relatório</strong></div>
+        <div><small>STATUS INTERNO</small><strong>Em andamento</strong></div>
+      </div>
+    </div>
+    <div class="tutorial-tip"><b>Prazo interno</b> organiza a equipe; ele não cria nem substitui prazo contratual.</div>
+  </div>
+
+  <div class="tutorial-grid-2">
+    <div class="tutorial-card">
+      <div class="tutorial-number">09</div>
+      <h3>Sugestão de responsáveis</h3>
+      <div class="role-guide">
+        <div><b>Coordenação-geral</b><span>Gestão, execução, acompanhamento de metas e entregas mensais.</span></div>
+        <div><b>Auxiliar administrativo</b><span>Listas, documentos, arquivos, planilhas e apoio administrativo.</span></div>
+        <div><b>Educadores Sociais</b><span>Participação, atendimentos, oficinas, planejamentos e relatórios.</span></div>
+        <div><b>Coordenação de Articulação / Articuladores</b><span>Território, mobilização, busca ativa, rede, Grupo Gestor e externas.</span></div>
+        <div><b>Equipe Técnica</b><span>Acompanhamentos, encaminhamentos, PVida e planejamentos de vida/trabalho.</span></div>
+        <div><b>Oficineiros</b><span>Execução das oficinas e registros próprios das atividades.</span></div>
+      </div>
+      <p class="small">São sugestões metodológicas. A coordenação pode configurar pessoas/equipes e períodos de atuação.</p>
+    </div>
+
+    <div class="tutorial-card">
+      <div class="tutorial-number">10</div>
+      <h3>Checklist antes de fechar o mês</h3>
+      <div class="close-checklist">
+        <label><span>1</span>Todas as etapas ativas foram revisadas?</label>
+        <label><span>2</span>Status corresponde ao que foi realizado?</label>
+        <label><span>3</span>Números vieram do documento?</label>
+        <label><span>4</span>Evidências provam o indicador?</label>
+        <label><span>5</span>Pendências e conflitos estão justificados?</label>
+        <label><span>6</span>Responsáveis do mês foram definidos?</label>
+        <label><span>7</span>Arquivos e links estão identificados?</label>
+        <label><span>8</span>Exportação foi conferida antes do envio?</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="tutorial-card tutorial-wide">
+    <div class="tutorial-number">11</div>
+    <h3>Exportar e enviar</h3>
+    <div class="export-guide">
+      <div><span>📊</span><b>Excel geral</b><p>Consolida metas, competências e responsabilidades.</p></div>
+      <div><span>📋</span><b>Plano mensal</b><p>Distribui ordens e prazos internos para a equipe.</p></div>
+      <div><span>📝</span><b>HTML editável</b><p>Pode ser aberto, salvo e enviado de forma independente.</p></div>
+      <div><span>🖨</span><b>PDF</b><p>Ideal para reunião, arquivo e envio institucional.</p></div>
+    </div>
+    <div class="tutorial-final-actions">
+      <a class="tutorial-link-btn tutorial-standalone-primary" href="./">Começar no sistema</a>
+      
+      
+    </div>
+  </div>
+
+  <div class="tutorial-card tutorial-wide tutorial-help">
+    <h3>Resumo dos campos</h3>
+    <div class="tutorial-summary-table-wrap">
+      <table class="tutorial-summary-table">
+        <thead><tr><th>Campo</th><th>Preencha assim</th><th>Evite</th></tr></thead>
+        <tbody>
+          <tr><td>Status</td><td>Situação real da etapa no mês.</td><td>Marcar “Cumprida” antes da evidência.</td></tr>
+          <tr><td>Realizado / Valor</td><td>Valor real quando numérico; descrição objetiva quando qualitativo.</td><td>Inventar quantidade sem base documental.</td></tr>
+          <tr><td>Evidências</td><td>Nome, local ou link dos documentos que comprovam o indicador.</td><td>“Foi feito”, “tem foto”, “está no grupo”.</td></tr>
+          <tr><td>Justificativa</td><td>Contexto, resultado, pendência e encaminhamento.</td><td>Texto genérico sem explicar o ocorrido.</td></tr>
+          <tr><td>Responsável</td><td>Quem responde pela entrega naquela competência.</td><td>Tratar sugestão metodológica como trava fixa.</td></tr>
+          <tr><td>Conflito documental</td><td>Manter referências e registrar critério oficial.</td><td>Escolher sozinho qual trecho “vale”.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</div>
+</body>
+</html>
