@@ -100,24 +100,71 @@ async function signupApp(){
   if(!email||password.length<6)return authMsg('Informe um e-mail e uma senha com pelo menos 6 caracteres.','bad');
   const {data,error}=await supabase.auth.signUp({email,password});
   if(error)return authMsg(error.message,'bad');
-  authMsg(data.session?'Conta criada e autenticada.':'Conta criada. Confirme o e-mail, se solicitado, e depois entre.','good');
+  authMsg(data.session?'Conta criada e autenticada. Acesso liberado automaticamente.':'Conta criada. Confirme o e-mail enviado para você e depois entre. O acesso será liberado automaticamente.','good');
 }
 async function handleAuthenticated(user){
-  authUser=user;document.getElementById('authUserBadge').textContent=user.email||'Usuário autenticado';
-  const {data,error}=await supabase.from('crj_app_members').select('role,active').eq('user_id',user.id).maybeSingle();
-  if(error){console.error(error);return showMembership('Não foi possível verificar seu perfil de acesso.')}
-  if(!data||!data.active){appRole=null;return showMembership('Conta autenticada, mas ainda sem autorização para o Sistema de Metas.')}
-  appRole=data.role;document.getElementById('authUserBadge').textContent=`${user.email||'Usuário'} · ${appRole}`;
+  authUser=user;
+  document.getElementById('authUserBadge').textContent=user.email||'Usuário autenticado';
+
+  let {data,error}=await supabase
+    .from('crj_app_members')
+    .select('role,active')
+    .eq('user_id',user.id)
+    .maybeSingle();
+
+  if(error){
+    console.error(error);
+    return showMembership('Não foi possível verificar seu perfil de acesso.');
+  }
+
+  if(data && !data.active){
+    appRole=null;
+    return showMembership('Seu acesso ao Sistema de Metas está desativado. Procure a administração.');
+  }
+
+  // Após a confirmação do e-mail, o primeiro login cria automaticamente
+  // o vínculo do próprio usuário como Coordenador. A RLS do Supabase
+  // impede autoelevação para administrador ou cadastro de terceiros.
+  if(!data){
+    const created=await supabase
+      .from('crj_app_members')
+      .insert({
+        user_id:user.id,
+        role:'coordinator',
+        active:true,
+        created_by:null
+      })
+      .select('role,active')
+      .single();
+
+    if(created.error){
+      console.error(created.error);
+      appRole=null;
+      return showMembership('Confirme seu e-mail antes de entrar. Se ele já estiver confirmado, saia e faça login novamente.');
+    }
+    data=created.data;
+  }
+
+  appRole=data.role;
+  document.getElementById('authUserBadge').textContent=`${user.email||'Usuário'} · ${appRole}`;
   document.getElementById('authGate').classList.add('auth-hidden');
-  try{await loadCloudState();if(appRole==='admin')await loadAccessRequests();else document.getElementById('accessAdminCard').style.display='none';applyRoleUI()}catch(e){console.error(e);setSync('Banco: erro ao carregar','sync-bad');alert('Falha ao carregar os dados do Supabase: '+e.message)}
+
+  try{
+    await loadCloudState();
+    applyRoleUI();
+  }catch(e){
+    console.error(e);
+    setSync('Banco: erro ao carregar','sync-bad');
+    alert('Falha ao carregar os dados do Supabase: '+e.message);
+  }
 }
-function showMembership(msg){document.getElementById('authGate').classList.remove('auth-hidden');document.getElementById('loginPanel').classList.add('auth-hidden');document.getElementById('membershipPanel').classList.remove('auth-hidden');document.getElementById('membershipText').textContent=msg;setSync('Banco: acesso pendente','sync-warn')}
-async function claimAdmin(){
-  const token=document.getElementById('bootstrapToken').value.trim();if(!token)return alert('Informe o código de ativação.');
-  const {data,error}=await supabase.rpc('crj_claim_admin',{p_token:token});
-  if(error)return alert('Erro na ativação: '+error.message);
-  if(!data)return alert('Código inválido ou o primeiro administrador já foi definido.');
-  await handleAuthenticated(authUser);
+
+function showMembership(msg){
+  document.getElementById('authGate').classList.remove('auth-hidden');
+  document.getElementById('loginPanel').classList.add('auth-hidden');
+  document.getElementById('membershipPanel').classList.remove('auth-hidden');
+  document.getElementById('membershipText').textContent=msg;
+  setSync('Banco: validação necessária','sync-warn');
 }
 async function redeemInvite(){
   if(!authUser)return alert('Faça login antes de usar o convite.');
@@ -141,18 +188,6 @@ async function logoutApp(){if(supabase)await supabase.auth.signOut();localStorag
 function applyRoleUI(){
   const readOnly=!canEdit();
   document.querySelectorAll('#monthlyView input,#monthlyView select,#monthlyView textarea,#sheetView input,#configView input,#configView select,#configView textarea').forEach(el=>{if(!el.closest('#accessAdminCard'))el.disabled=readOnly});
-}
-async function loadAccessRequests(){
-  const card=document.getElementById('accessAdminCard');card.style.display='block';
-  const {data,error}=await supabase.from('crj_membership_requests').select('user_id,email,requested_at').order('requested_at',{ascending:true});
-  const box=document.getElementById('pendingAccess');if(error){box.innerHTML='<div class="alert bad">Erro ao carregar solicitações.</div>';return}
-  box.innerHTML=data?.length?data.map(r=>`<div class="access-row"><div><b>${esc(r.email)}</b><div class="small">${new Date(r.requested_at).toLocaleString('pt-BR')}</div></div><select id="role_${r.user_id}"><option value="coordinator">Coordenador</option><option value="viewer">Visualizador</option><option value="admin">Administrador</option></select><button onclick="approveAccess('${r.user_id}','${esc(r.email)}')">Aprovar</button></div>`).join(''):'<div class="small">Nenhuma solicitação pendente.</div>';
-}
-async function approveAccess(userId,email){
-  const role=document.getElementById('role_'+userId).value;
-  const {error}=await supabase.from('crj_app_members').insert({user_id:userId,role,active:true,created_by:authUser.id});
-  if(error)return alert('Erro ao aprovar: '+error.message);
-  await supabase.from('crj_membership_requests').delete().eq('user_id',userId);await loadAccessRequests();alert(email+' aprovado como '+role+'.');
 }
 function clearLocalCache(){localStorage.removeItem('crjMetasDB');alert('Cache local limpo. Os dados oficiais permanecem no Supabase.')}
 function addMonths(dateStr,n){const d=new Date(dateStr+'T12:00:00');d.setMonth(d.getMonth()+n);return d}
