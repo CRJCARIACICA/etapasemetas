@@ -193,12 +193,22 @@ function autoStageBlock(r){
   const a=r?.auto;
   if(!a?.indicators?.length)return '';
   const rows=a.indicators.map(x=>{
-    const id=Number(x.identifiedValue||0),ag=Number(x.aggregateValue||0),tot=Number(x.totalValue||0);
+    const id=Number(x.identifiedValue||0),ag=Number(x.aggregateValue||0),uniq=Number(x.uniqueYouth||0);
     const target=x.target==null?'':` · referência ${x.target} ${x.unit||''}`;
-    const source=ag>0?`${id} identificado(s) + ${ag} agregado(s)`:`${id} identificado(s)`;
-    return `<div class="auto-feed-row"><div><b>${esc(x.label||x.code)}</b><small>${esc(x.code||'')}${esc(target)}</small></div><strong>${esc(tot)} ${esc(x.unit||'')}</strong><span>${esc(source)}</span></div>`;
+    let value='',source='';
+    if(ag>0&&id>0){
+      value=`${id} identificados + ${ag} agregados`;
+      source=`Não deduplicável${uniq? ` · ${uniq} jovem(ns) único(s) identificado(s)`:''}`;
+    }else if(ag>0){
+      value=`${ag} agregados`;
+      source='Sem trajetória nominal';
+    }else{
+      value=`${id} ${x.unit||''}`;
+      source=uniq?`${uniq} jovem(ns) único(s) identificado(s)`:'Rastreável pela origem';
+    }
+    return `<div class="auto-feed-row"><div><b>${esc(x.label||x.code)}</b><small>${esc(x.code||'')}${esc(target)}</small></div><strong>${esc(value)}</strong><span>${esc(source)}</span></div>`;
   }).join('');
-  return `<div class="auto-feed"><div class="auto-feed-head"><div><b>Alimentação automática — CRJ Trajetórias</b><small>Dados operacionais sincronizados. O preenchimento manual não é apagado.</small></div><span class="badge ${a.hasAggregate?'due':'ok'}">${a.hasAggregate?'contém agregado':'rastreável por jovem'}</span></div>${rows}<div class="auto-feed-foot">Última sincronização: ${esc(a.updatedAt?new Date(a.updatedAt).toLocaleString('pt-BR'):'—')}</div></div>`;
+  return `<div class="auto-feed"><div class="auto-feed-head"><div><b>Alimentação automática — CRJ Trajetórias</b><small>Dados operacionais sincronizados. O preenchimento manual não é apagado.</small></div><span class="badge ${a.hasAggregate?'due':'ok'}">${a.hasAggregate?'contém agregado — conferir sobreposição':'rastreável por origem'}</span></div>${rows}<div class="auto-feed-foot">Última sincronização: ${esc(a.updatedAt?new Date(a.updatedAt).toLocaleString('pt-BR'):'—')}</div></div>`;
 }
 
 function renderMonthly(){const n=db.current;document.getElementById('monthTitle').textContent=`M${n} — ${fmtMonth(addMonths(db.config.start,n-1))}`;let show=document.getElementById('showInactive')?.checked;let html='';for(let m=1;m<=9;m++){let ss=stages.filter(s=>s.m===m&&(show||isActive(s,n)));if(!ss.length)continue;html+=`<div class="meta-group"><div class="meta-head"><div><b>Meta ${m}</b> — ${metas[m]}</div><small>${ss.filter(s=>isDue(s,n)).length} vencimento(s) nesta competência</small></div>`;for(const s of ss){const r=monthRecord(n,s.c),val=validateStage(s,n);html+=`<div class="stage"><div class="stage-top"><div><span class="stage-code">Etapa ${s.c}</span><span class="stage-name">${s.t}</span><span class="explain">?<span class="tip"><b>Como justificar:</b> ${s.why}<br><br><b>Periodicidade:</b> ${s.cad}.${s.conflict?'<br><br><b>Atenção documental:</b> '+s.conflict:''}</span></span><div style="margin-top:7px">${isActive(s,n)?'<span class="badge active">ativa no cronograma</span>':'<span class="badge na">fora do cronograma</span>'} ${isDue(s,n)?'<span class="badge due">entrega vencendo</span>':''} <span class="badge na">${s.cad}</span></div></div><div class="small"><b>Responsável vigente:</b><br>${coordFor(n)||'Coordenação não configurada'}</div><div>${s.conflict?'<span class="badge bad">conflito documental</span>':''}</div></div><div class="stage-details"><div class="detail"><b>Resultado esperado</b>${s.r}</div><div class="detail"><b>Indicador</b>${s.i}</div><div class="detail"><b>Meio de verificação oficial</b>${s.v}</div></div><div class="subitems"><b style="font-size:12px">Itens/subitens que o sistema recomenda comprovar</b><ul>${s.subs.map(x=>`<li>${x}</li>`).join('')}</ul></div>${autoStageBlock(r)}<div class="form-grid"><div class="field"><label>Status da etapa no mês</label><select onchange="setField('${s.c}',${n},'status',this.value)" ${!isActive(s,n)?'disabled':''}>${statusOptions(r.status,s,n)}</select></div><div class="field"><label>Realizado / valor do indicador</label><input value="${esc(r.realized)}" onchange="setField('${s.c}',${n},'realized',this.value)" placeholder="Ex.: 380; 100%; 1 reunião"></div><div class="field wide"><label>Meios de verificação disponíveis</label><div class="evidence-row">${evidenceChecks(s,n,r)}</div></div><div class="field full"><label>Evidências / documentos / links / nomes de arquivos</label><textarea onchange="setField('${s.c}',${n},'evidence',this.value)" placeholder="Ex.: Ata_28-09.pdf; Lista_Presenca.xlsx; pasta Drive...">${esc(r.evidence)}</textarea></div><div class="field full"><label>Justificativa técnica, resultado e encaminhamento</label><textarea onchange="setField('${s.c}',${n},'notes',this.value)" placeholder="Explique o que foi realizado, como o indicador foi obtido e, se parcial/não cumprido/sem demanda, o motivo e a providência.">${esc(r.notes)}</textarea></div></div><div class="validation ${val.c}">${val.t}</div></div>`}html+='</div>'}document.getElementById('monthlyContent').innerHTML=html}
