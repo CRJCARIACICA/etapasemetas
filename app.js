@@ -195,6 +195,7 @@ function autoStageBlock(r){
   const rows=a.indicators.map(x=>{
     const id=Number(x.identifiedValue||0),ag=Number(x.aggregateValue||0),uniq=Number(x.uniqueYouth||0);
     const target=x.target==null?'':` · referência ${x.target} ${x.unit||''}`;
+    const window=x.windowStart&&x.windowEnd?` · janela ${x.windowStart}–${x.windowEnd}`:'';
     let value='',source='';
     if(ag>0&&id>0){
       value=`${id} identificados + ${ag} agregados`;
@@ -206,7 +207,7 @@ function autoStageBlock(r){
       value=`${id} ${x.unit||''}`;
       source=uniq?`${uniq} jovem(ns) único(s) identificado(s)`:'Rastreável pela origem';
     }
-    return `<div class="auto-feed-row"><div><b>${esc(x.label||x.code)}</b><small>${esc(x.code||'')}${esc(target)}</small></div><strong>${esc(value)}</strong><span>${esc(source)}</span></div>`;
+    return `<div class="auto-feed-row"><div><b>${esc(x.label||x.code)}</b><small>${esc(x.code||'')}${esc(target)}${esc(window)}</small></div><strong>${esc(value)}</strong><span>${esc(source)}</span></div>`;
   }).join('');
   return `<div class="auto-feed"><div class="auto-feed-head"><div><b>Alimentação automática — CRJ Trajetórias</b><small>Dados operacionais sincronizados. O preenchimento manual não é apagado.</small></div><span class="badge ${a.hasAggregate?'due':'ok'}">${a.hasAggregate?'contém agregado — conferir sobreposição':'rastreável por origem'}</span></div>${rows}<div class="auto-feed-foot">Última sincronização: ${esc(a.updatedAt?new Date(a.updatedAt).toLocaleString('pt-BR'):'—')}</div></div>`;
 }
