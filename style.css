@@ -55,3 +55,18 @@ label{font-size:12px;font-weight:700;color:#46556a;display:block;margin-bottom:5
 @media(max-width:980px){.tutorial-hero{align-items:flex-start;flex-direction:column}.tutorial-grid-2{grid-template-columns:1fr}.tutorial-read-order{grid-template-columns:1fr 1fr}.tutorial-source-grid{grid-template-columns:1fr}.tutorial-source-grid>div{border-right:0;border-bottom:1px solid #e1e8ef}.tutorial-form-grid{grid-template-columns:1fr}.tutorial-field.full{grid-column:auto}.conflict-visual{grid-template-columns:1fr}.conflict-vs{text-align:center}.resp-demo-grid{grid-template-columns:1fr 1fr}.export-guide{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.tutorial-read-order,.decision-branches,.tutorial-badgood,.resp-demo-grid,.export-guide{grid-template-columns:1fr}.tutorial-hero h2{font-size:24px}.tutorial-flow{padding-bottom:10px}.tutorial-arrow{display:none}}
 @media print{#tutorialView.active{display:block!important}.tutorial-hero{background:#fff;color:#000;border:1px solid #bbb}.tutorial-hero p{color:#444}.tutorial-hero-actions{display:none}.tutorial-card{break-inside:avoid}.tutorial-flow{overflow:visible;flex-wrap:wrap}.tutorial-link-btn{display:none}}
+
+
+/* Integração automática — CRJ Trajetórias */
+.auto-feed{margin:12px 0;border:1px solid #b8d7ef;border-left:4px solid #2d6fa5;border-radius:10px;background:#f5faff;overflow:hidden}
+.auto-feed-head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 12px;background:#eaf4fc}
+.auto-feed-head b,.auto-feed-head small{display:block}
+.auto-feed-head b{font-size:12px;color:#234f78}
+.auto-feed-head small{font-size:10px;color:#64748b;margin-top:2px}
+.auto-feed-row{display:grid;grid-template-columns:minmax(260px,2fr) minmax(120px,.6fr) minmax(170px,1fr);gap:10px;align-items:center;padding:9px 12px;border-top:1px solid #d9e8f4;font-size:11px}
+.auto-feed-row b,.auto-feed-row small{display:block}
+.auto-feed-row small{font-size:9px;color:#6b7c8e;margin-top:2px}
+.auto-feed-row strong{color:#234f78}
+.auto-feed-row span{color:#64748b}
+.auto-feed-foot{padding:7px 12px;border-top:1px solid #d9e8f4;font-size:9px;color:#738497}
+@media(max-width:780px){.auto-feed-head{align-items:flex-start;flex-direction:column}.auto-feed-row{grid-template-columns:1fr}}
